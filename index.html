@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Data Extraction Platform — Exclusive Acquisition</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#060810;--surface:#0d1120;--border:#1a2240;--accent:#00d4ff;--accent2:#00ff94;--text:#e8eef8;--muted:#5a6888;--amazon:#ff9900;--aliexpress:#ff3a00;--temu:#dd22aa;--alibaba:#ff6600}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.35;pointer-events:none;z-index:0}
+.glow{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:.07;pointer-events:none;z-index:0}
+.glow-1{background:var(--accent);top:-200px;right:-100px}
+.glow-2{background:var(--accent2);bottom:0;left:-200px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 60px;background:rgba(6,8,16,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--text);text-decoration:none}
+.logo span{color:var(--accent)}
+.nav-cta{background:transparent;color:var(--accent);font-weight:600;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;border:1px solid var(--accent);transition:background .2s}
+.nav-cta:hover{background:rgba(0,212,255,.08)}
+
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
+.hero-inner{max-width:820px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,148,.07);border:1px solid rgba(0,255,148,.2);padding:6px 18px;border-radius:100px;font-size:13px;color:var(--accent2);margin-bottom:32px;font-weight:600;letter-spacing:.5px}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:1.06;letter-spacing:-2px;margin-bottom:24px}
+h1 .cyan{color:var(--accent)}
+.hero-sub{font-size:18px;color:var(--muted);max-width:540px;margin:0 auto 48px;font-weight:300;line-height:1.7}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--accent2);color:#000;font-weight:700;font-size:16px;padding:16px 36px;border-radius:12px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(0,255,148,.2)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(0,255,148,.35)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--text);font-weight:500;font-size:16px;padding:16px 36px;border-radius:12px;text-decoration:none;border:1px solid var(--border);transition:border-color .2s,background .2s}
+.btn-secondary:hover{border-color:var(--accent);background:rgba(0,212,255,.05)}
+.platforms{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.platform-pill{display:flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;font-size:14px;font-weight:600;border:1.5px solid}
+.p-amazon{color:var(--amazon);border-color:var(--amazon);background:rgba(255,153,0,.06)}
+.p-ali{color:var(--aliexpress);border-color:var(--aliexpress);background:rgba(255,58,0,.06)}
+.p-temu{color:var(--temu);border-color:var(--temu);background:rgba(221,34,170,.06)}
+.p-alibaba{color:var(--alibaba);border-color:var(--alibaba);background:rgba(255,102,0,.06)}
+
+section{position:relative;z-index:1}
+.sw{max-width:1060px;margin:0 auto;padding:80px 24px}
+.sw.narrow{max-width:760px}
+.sl{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-1px;margin-bottom:12px;text-align:center}
+.ss{text-align:center;color:var(--muted);margin-bottom:52px;font-size:16px}
+hr{border:none;border-top:1px solid var(--border)}
+
+.video-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 0 80px rgba(0,212,255,.08)}
+.video-placeholder{width:100%;aspect-ratio:16/9;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--muted)}
+.play-btn{width:68px;height:68px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 40px rgba(0,212,255,.35)}
+.play-btn svg{width:26px;fill:#000;margin-left:4px}
+
+.extract-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:40px}
+.extract-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center}
+.extract-icon{font-size:28px;margin-bottom:10px}
+.extract-card h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px}
+.extract-card p{font-size:13px;color:var(--muted)}
+
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-family:'Syne',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:12px 18px;text-align:left;border-bottom:1px solid var(--border)}
+.data-table td{padding:14px 18px;font-size:15px;border-bottom:1px solid rgba(26,34,64,.5)}
+.check{color:var(--accent2);font-size:17px}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color .2s,transform .2s}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.feature-icon{width:44px;height:44px;border-radius:10px;background:rgba(0,212,255,.08);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.feature-card h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:8px}
+.feature-card p{color:var(--muted);font-size:14px;line-height:1.7}
+
+.arch-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;font-family:monospace;font-size:13px;line-height:1.9;color:#7090b0}
+.arch-box .dir{color:var(--accent);font-weight:700}
+.arch-box .file{color:#a0c0e0}
+.arch-box .comment{color:var(--muted)}
+
+.mono-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.mono-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;align-items:flex-start;gap:12px}
+.mono-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--border);line-height:1}
+.mono-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.mono-card p{font-size:13px;color:var(--muted)}
+
+.buyers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.buyer-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;border-left:3px solid var(--accent2)}
+.buyer-card h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.buyer-card p{font-size:13px;color:var(--muted)}
+
+.acq-card{background:var(--surface);border:1px solid rgba(0,255,148,.3);border-radius:24px;padding:52px;text-align:center;box-shadow:0 0 80px rgba(0,255,148,.06)}
+.acq-badge{display:inline-block;background:rgba(0,255,148,.08);border:1px solid rgba(0,255,148,.25);color:var(--accent2);padding:6px 18px;border-radius:100px;font-size:13px;font-weight:600;margin-bottom:28px}
+.acq-price{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.acq-range{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--text);letter-spacing:-2px;margin-bottom:8px}
+.acq-note{color:var(--muted);font-size:14px;margin-bottom:40px}
+.acq-items{text-align:left;max-width:420px;margin:0 auto 44px;display:flex;flex-direction:column;gap:12px}
+.acq-item{display:flex;align-items:center;gap:12px;font-size:15px}
+.acq-item::before{content:'→';color:var(--accent2);font-weight:700;flex-shrink:0}
+.why-selling{margin-top:32px;padding:20px 24px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:12px;font-size:14px;color:var(--muted);font-style:italic}
+
+footer{position:relative;z-index:1;text-align:center;padding:36px 24px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-inner>*{animation:fadeUp .6s ease both}
+.hero-inner>*:nth-child(1){animation-delay:.1s}
+.hero-inner>*:nth-child(2){animation-delay:.2s}
+.hero-inner>*:nth-child(3){animation-delay:.3s}
+.hero-inner>*:nth-child(4){animation-delay:.4s}
+.hero-inner>*:nth-child(5){animation-delay:.5s}
+</style>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Nitro<span>Leads</span></a>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <a href="#privacy" style="color:var(--muted);text-decoration:none;font-size:14px;">Privacy Policy</a>
+    <a href="#acquisition" class="nav-cta">Request Acquisition Details</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Exclusive Acquisition Opportunity</div>
+    <h1>eCommerce Product<br><span class="cyan">Import Engine</span></h1>
+    <p class="hero-sub">A production-ready Chrome Extension that extracts complete product data from 4 major platforms — built for acquisition, ready to monetize.</p>
+    <div class="hero-btns">
+      <a href="#acquisition" class="btn-primary">Request Acquisition Details</a>
+      <a href="#demo" class="btn-secondary">▶ Watch Demo</a>
+    </div>
+    <div class="platforms">
+      <div class="platform-pill p-amazon">Amazon</div>
+      <div class="platform-pill p-ali">AliExpress</div>
+      <div class="platform-pill p-temu">Temu</div>
+      <div class="platform-pill p-alibaba">Alibaba</div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- VIDEO -->
+<section id="demo">
+  <div class="sw">
+    <h2 class="sl">See It In Action</h2>
+    <p class="ss">2-minute demo across all 4 platforms.</p>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/lFn-OMEdlJw"
+        frameborder="0"
+        allowfullscreen
+        loading="lazy"
+        style="width:100%;aspect-ratio:16/9;display:block;border-radius:12px;">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- WHAT IT EXTRACTS -->
+<section>
+  <div class="sw">
+    <h2 class="sl">What It Extracts</h2>
+    <p class="ss">Every data point a reseller or SaaS product needs.</p>
+    <div class="extract-grid">
+      <div class="extract-card"><div class="extract-icon">📝</div><h4>Product Title</h4><p>Full name, special characters included</p></div>
+      <div class="extract-card"><div class="extract-icon">💰</div><h4>Price</h4><p>With currency symbol, all variants</p></div>
+      <div class="extract-card"><div class="extract-icon">🖼️</div><h4>Images</h4><p>All product images — ZIP download</p></div>
+      <div class="extract-card"><div class="extract-icon">📄</div><h4>Description</h4><p>Full HTML, ready to publish</p></div>
+      <div class="extract-card"><div class="extract-icon">📊</div><h4>Specifications</h4><p>Key: Value format, CSV export</p></div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Platform</th><th>Title</th><th>Price</th><th>Images</th><th>Description</th><th>Specs</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--amazon);font-weight:600">Amazon</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td style="color:var(--aliexpress);font-weight:600">AliExpress</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td style="color:var(--temu);font-weight:600">Temu</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td style="color:var(--alibaba);font-weight:600">Alibaba</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr>
+
+<!-- WHY HARD -->
+<section>
+  <div class="sw">
+    <h2 class="sl">Why This Is Hard To Build</h2>
+    <p class="ss">Each platform required a completely different technical approach.</p>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">🔄</div><h3>Remote Selector Updates</h3><p>When sites change their DOM, update one GitHub JSON file — all users fixed instantly. No republishing needed.</p></div>
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>MV3 Compliant</h3><p>Built natively for Manifest V3. MV2 extensions are being deprecated. Most competitors haven't migrated yet.</p></div>
+      <div class="feature-card"><div class="feature-icon">🌐</div><h3>Shadow DOM Traversal</h3><p>AliExpress uses Web Components. This extension traverses Shadow DOM trees — most tools fail silently here.</p></div>
+      <div class="feature-card"><div class="feature-icon">⚛️</div><h3>React Store Bypass</h3><p>Temu blocks inline scripts via CSP. Uses chrome.scripting in MAIN world — the only reliable MV3 solution.</p></div>
+      <div class="feature-card"><div class="feature-icon">🪟</div><h3>Dual Layout Support</h3><p>AliExpress has two layouts: full page and mini popup. Detects which is active and handles each correctly.</p></div>
+      <div class="feature-card"><div class="feature-icon">🧩</div><h3>Modular Architecture</h3><p>One file per platform. Clean separation. Easy to extend or sell individual modules separately.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ARCHITECTURE -->
+<section>
+  <div class="sw narrow">
+    <h2 class="sl">Architecture</h2>
+    <p class="ss">Clean, documented, ready to hand over.</p>
+    <div class="arch-box">
+<span class="dir">core/</span><br>
+&nbsp;&nbsp;<span class="file">utils.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— shared utility functions</span><br>
+&nbsp;&nbsp;<span class="file">selectors.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— remote selector update system</span><br><br>
+<span class="dir">platforms/</span><br>
+&nbsp;&nbsp;<span class="file">amazon.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— A+ content, spec tables, feature bullets</span><br>
+&nbsp;&nbsp;<span class="file">alibaba.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— iframe descriptions, tiered pricing</span><br>
+&nbsp;&nbsp;<span class="file">aliexpress.js</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— Shadow DOM + dual layout support</span><br>
+&nbsp;&nbsp;<span class="file">temu.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— React store bypass (CSP-safe)</span><br>
+&nbsp;&nbsp;<span class="file">specs.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— unified specs extractor</span><br><br>
+<span class="file">content.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— clean orchestrator (~400 lines)</span><br>
+<span class="file">background.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— service worker + cross-origin proxy</span><br>
+<span class="file">selectors.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">— remote-updatable CSS selectors</span>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- MONETIZATION -->
+<section>
+  <div class="sw">
+    <h2 class="sl">Potential Monetization</h2>
+    <p class="ss">Multiple paths to revenue for the right buyer.</p>
+    <div class="mono-grid">
+      <div class="mono-card"><div class="mono-num">01</div><div><h4>Chrome Web Store</h4><p>Paid extension — $9–29/month subscription</p></div></div>
+      <div class="mono-card"><div class="mono-num">02</div><div><h4>SaaS Platform</h4><p>Wrap it in a web app with team plans</p></div></div>
+      <div class="mono-card"><div class="mono-num">03</div><div><h4>Shopify Ecosystem</h4><p>Product import tool for Shopify merchants</p></div></div>
+      <div class="mono-card"><div class="mono-num">04</div><div><h4>Automation Agencies</h4><p>White-label for dropshipping clients</p></div></div>
+      <div class="mono-card"><div class="mono-num">05</div><div><h4>Supplier Sourcing</h4><p>Integrate into sourcing workflows</p></div></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- IDEAL BUYERS -->
+<section>
+  <div class="sw">
+    <h2 class="sl">Who This Is For</h2>
+    <p class="ss">This acquisition makes sense for one of these profiles.</p>
+    <div class="buyers-grid">
+      <div class="buyer-card"><h4>eCommerce SaaS Founders</h4><p>Add product import to an existing tool or launch a new one.</p></div>
+      <div class="buyer-card"><h4>Chrome Extension Businesses</h4><p>Expand your portfolio with a production-ready asset.</p></div>
+      <div class="buyer-card"><h4>Product Sourcing Tools</h4><p>Integrate data extraction into your platform.</p></div>
+      <div class="buyer-card"><h4>Automation Agencies</h4><p>White-label and resell to dropshipping clients.</p></div>
+      <div class="buyer-card"><h4>Shopify Ecosystem Builders</h4><p>Build a product migration app for Shopify merchants.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ACQUISITION -->
+<section id="acquisition">
+  <div class="sw narrow">
+    <h2 class="sl">Acquisition Details</h2>
+    <p class="ss">One buyer. Full ownership. No ongoing obligations.</p>
+    <div class="acq-card">
+      <div class="acq-badge">⬡ Exclusive — One Buyer Only</div>
+      <div class="acq-price">Acquisition Range</div>
+      <div class="acq-range">Open to Offers</div>
+      <p class="acq-note">Mid 3-figure range · Serious inquiries only</p>
+      <div class="acq-items">
+        <div class="acq-item">Complete source code — modular architecture</div>
+        <div class="acq-item">Remote selectors update system (GitHub)</div>
+        <div class="acq-item">Ready to publish on Chrome Web Store</div>
+        <div class="acq-item">Full IP transfer — no licenses, no royalties</div>
+        <div class="acq-item">Post-sale support window included</div>
+      </div>
+      <a href="mailto:jozefwablal23@gmail.com" class="btn-primary" style="display:inline-flex;justify-content:center;min-width:280px;">Request Acquisition Details</a>
+      <div class="why-selling">"Built as an internal product exploration project. Now available for exclusive acquisition — selling to focus on a new direction."</div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- PRIVACY POLICY -->
+<section id="privacy">
+  <div class="sw narrow">
+    <h2 class="sl">Privacy Policy</h2>
+    <p class="ss">Applies to all Chrome extensions published by this developer.</p>
+
+    <div class="feature-card" style="margin-bottom:24px;">
+      <h3>Universal Scraper</h3>
+      <p style="margin-top:10px;line-height:1.8;">
+        <strong>Effective Date:</strong> 2026<br><br>
+        Universal Scraper extracts product information (title, price, description,
+        specifications, and images) from product pages the user visits on
+        AliExpress, Amazon, Alibaba, and Temu, solely when the user clicks the
+        extension icon.<br><br>
+        <strong>Data Collection</strong><br>
+        The extension does not collect, sell, or transmit personal information
+        to any third party. No account registration with the extension itself
+        is required. No analytics, advertising, or tracking technologies are used.<br><br>
+        <strong>YouCan Integration (Optional)</strong><br>
+        If the user chooses to connect their own YouCan store, the extension
+        stores an OAuth authentication token locally in the user's browser
+        (chrome.storage.local). This token is used solely to send product data,
+        at the user's explicit request, directly to the user's own YouCan store
+        via YouCan's official API. This token never leaves the user's device
+        except to communicate directly with YouCan's servers, and is never sent
+        to the developer or any third party.<br><br>
+        <strong>Currency Conversion</strong><br>
+        When sending a product to YouCan, the extension may query a third-party
+        currency exchange rate API (open.er-api.com) to convert the product's
+        price into the store's currency. No personal or product-identifying
+        data is sent in this request — only the currency codes and amount.<br><br>
+        <strong>Data Usage</strong><br>
+        The extension accesses product page content solely to provide the
+        extraction and export functionality requested by the user.<br><br>
+        <strong>Local Processing</strong><br>
+        Product data is processed locally within the user's browser and, when
+        requested, sent directly to the user's own YouCan store or downloaded
+        to the user's own device. The developer does not operate any server
+        that receives or stores this data.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Amazon Product Extractor</h3>
+      <p style="margin-top:10px;line-height:1.8;">
+        <strong>Effective Date:</strong> June 2026<br><br>
+        Amazon Product Extractor processes product information directly from
+        Amazon product pages visited by the user.<br><br>
+        <strong>Data Collection</strong><br>
+        The extension does not collect, store, sell, or transmit personal
+        information. No account registration is required. No analytics,
+        advertising, or tracking technologies are used.<br><br>
+        <strong>Data Usage</strong><br>
+        The extension accesses product content displayed on Amazon product
+        pages solely to provide the extraction and export functionality
+        requested by the user.<br><br>
+        <strong>Local Processing</strong><br>
+        Product data is processed locally within the user's browser.
+      </p>
+    </div>
+
+    <p style="text-align:center;color:var(--muted);margin-top:32px;font-size:14px;">
+      Contact for privacy questions:
+      <a href="mailto:jozefwablal23@gmail.com" style="color:var(--accent);text-decoration:none;">jozefwablal23@gmail.com</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>eCommerce Product Import Engine · Chrome Extension · Exclusive Acquisition</p>
+  <p style="margin-top:8px">Serious inquiries only · <a href="mailto:jozefwablal23@gmail.com" style="color:var(--accent);text-decoration:none">Contact via email</a> · <a href="#privacy" style="color:var(--accent);text-decoration:none">Privacy Policy</a></p>
+</footer>
+</body>
+</html>
